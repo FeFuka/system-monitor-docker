@@ -1,0 +1,24 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=monitor
+      - DB_USER=admin
+      - DB_PASS=senha_secreta
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=monitor
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=senha_secreta
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
