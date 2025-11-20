@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Monitor</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 400px; text-align: center; }
+        .status-dot { height: 15px; width: 15px; background-color: #bbb; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        .online { background-color: #2ecc71; box-shadow: 0 0 8px #2ecc71; }
+        .error { background-color: #e74c3c; box-shadow: 0 0 8px #e74c3c; }
+        h1 { color: #333; margin-bottom: 0.5rem; }
+        p { color: #666; margin: 0.5rem 0; }
+        .db-info { background: #e8f4f8; padding: 10px; border-radius: 8px; font-size: 0.9rem; color: #2c3e50; margin-top: 1rem; border: 1px solid #b3e5fc; word-wrap: break-word; }
+        .refresh-btn { margin-top: 20px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
+        .refresh-btn:hover { background-color: #2980b9; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div style="margin-bottom: 20px;">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#3498db" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        </div>
+        <h1>System Monitor</h1>
+
+        {% if status == 'Online' %}
+            <p><span class="status-dot online"></span> Sistema Operacional</p>
+            <div class="db-info">
+                <strong>Banco de Dados Conectado:</strong><br>
+                {{ database }}
+            </div>
+        {% else %}
+            <p><span class="status-dot error"></span> Erro de Conexão</p>
+            <div class="db-info" style="background: #fdecea; border-color: #fadbd8; color: #c0392b;">
+                {{ details }}
+            </div>
+        {% endif %}
+
+        <button class="refresh-btn" onclick="window.location.reload()">Atualizar Status</button>
+    </div>
+</body>
+</html>
