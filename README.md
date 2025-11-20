@@ -1,6 +1,6 @@
 # 🐳 System Monitor - Dockerized Python & PostgreSQL App
 
-Uma aplicação Full-Stack containerizada para monitoramento de sistema, demonstrando a integração entre **Python (Flask)** e **PostgreSQL** utilizando **Docker** e **Docker Compose**.
+Uma aplicação Full-Stack containerizada para monitoramento de sistema, utilizando a integração entre **Python (Flask)** e **PostgreSQL** utilizando **Docker** e **Docker Compose**.
 
 ---
 
