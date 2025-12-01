@@ -1,8 +1,6 @@
 import requests
 from datetime import datetime
 
-# Configurações
-# Em produção, este script roda localmente no servidor
 URL = "http://localhost:8000"
 LOG_FILE = "uptime.log"
 
@@ -26,7 +24,7 @@ def check_status():
 
     log_line = f"[{timestamp}] {status}: {message}\n"
 
-    # Em produção, usar caminho absoluto se necessário
+    
     with open(LOG_FILE, "a") as f:
         f.write(log_line)
     print(log_line.strip())
