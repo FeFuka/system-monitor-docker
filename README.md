@@ -1,62 +1,87 @@
-# 🐳 System Monitor - Dockerized Python & PostgreSQL App
+# 🐳 Cloud System Monitor - Full-Stack & DevOps
 
-Uma aplicação Full-Stack containerizada para monitoramento de sistema, utilizando a integração entre **Python (Flask)** e **PostgreSQL** utilizando **Docker** e **Docker Compose**.
+Uma aplicação Full-Stack containerizada para monitoramento de sistema, projetada para demonstrar o ciclo de vida completo de **DevOps**: Desenvolvimento, Containerização, Infraestrutura em Nuvem (AWS) e Automação.
+
+O projeto resolve inconsistências de ambiente ("works on my machine") e implementa práticas de observabilidade básica.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Evolução do Projeto
 
-* **Linguagem:** Python 3.9
-* **Framework Web:** Flask
+Este repositório representa a consolidação de três etapas práticas de engenharia:
+
+* ✅ **Fase 1 (Dev & Docker):** Desenvolvimento da API (Python/Flask) e Frontend, orquestração com Docker Compose e persistência de dados (PostgreSQL).
+* ✅ **Fase 2 (Cloud Infrastructure):** Provisionamento de servidor Linux na **AWS (EC2)**, configuração de Security Groups (Firewall) e deploy em produção.
+* ✅ **Fase 3 (Automação & Ops):** Desenvolvimento de scripts em Python para *Health Checks* automáticos, agendados via **Cron** para monitoramento 24/7.
+
+---
+
+## 🛠️ Tech Stack
+
+* **Linguagem:** Python 3.9 (Flask & Scripting)
 * **Banco de Dados:** PostgreSQL 13
+* **Frontend:** HTML5 / CSS3 (Jinja2 Templates)
 * **Containerização:** Docker & Dockerfile
 * **Orquestração:** Docker Compose
-* **Driver de Banco:** Psycopg2
+* **Cloud:** AWS (EC2, Security Groups)
+* **OS:** Linux Ubuntu 24.04 LTS
+* **Automação:** Bash & Crontab
 
-## 📋 Pré-requisitos
+---
 
-Para rodar este projeto localmente, você precisa apenas ter o Docker instalado:
+## 📋 Como Executar (Localmente ou no Servidor)
 
-* [Docker Desktop](https://www.docker.com/products/docker-desktop) (Windows/Mac) ou Docker Engine (Linux)
-* Docker Compose
+### 1. Pré-requisitos
+* Docker e Docker Compose instalados.
 
-## 🚀 Como Executar o Projeto
+### 2. Configuração de Segurança (.env)
+Este projeto segue as boas práticas do *12-Factor App*. As credenciais não estão no código.
+Crie um arquivo `.env` na raiz do projeto e defina suas variáveis:
 
-1.  **Clone o repositório:**
-    ```bash
-    git clone [https://github.com/FeFuka/system-monitor-docker.git](https://github.com/FeFuka/system-monitor-docker.git)
-    cd system-monitor-docker
-    ```
+```ini
+DB_NAME=monitor
+DB_USER=admin
+DB_PASS=sua_senha_secreta
 
-2.  **Suba os containers:**
-    O comando abaixo irá construir a imagem da aplicação, baixar a imagem do banco de dados e iniciar a rede.
-    ```bash
-    docker-compose up --build
-    ```
+POSTGRES_DB=monitor
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=sua_senha_secreta
+```
 
-3.  **Acesse a aplicação:**
-    Abra seu navegador no endereço:
-    [http://localhost:8000](http://localhost:8000)
+### 3. Subindo a Aplicação
+O comando abaixo constrói a imagem, cria a rede interna e inicia os containers:
 
-    **Resultado esperado (JSON):**
-    ```json
-    {
-      "database": "PostgreSQL 13.23 ...",
-      "status": "Online"
-    }
-    ```
+```bash
+docker-compose up -d --build
+```
 
-4.  **Para parar a aplicação:**
-    Pressione `Ctrl+C` no terminal ou rode:
-    ```bash
-    docker-compose down
-    ```
+### 4. Acessando
+Abra seu navegador em: `http://localhost:8000` (ou no IP Público da sua instância AWS).
 
-## 🏗️ Arquitetura e Conceitos Aplicados
+Para parar a aplicação:
+```bash
+docker-compose down
+```
 
-* **Microserviços:** A aplicação é dividida em dois serviços (`web` e `db`) que rodam em containers isolados.
-* **Docker Networking:** A comunicação entre a API e o Banco não usa `localhost`, mas sim o DNS interno do Docker, garantindo isolamento da rede do host.
-* **Persistência de Dados (Volumes):** Utilização de Docker Volumes (`postgres_data`) para garantir que os dados do banco não sejam perdidos quando o container é reiniciado.
-* **Variáveis de Ambiente:** Configuração sensível (senhas, hosts) injetada via `docker-compose.yml`, desacoplando a configuração do código fonte.
+---
 
+## 🤖 Automação de Monitoramento
 
+O projeto inclui um agente de monitoramento (`monitor.py`) projetado para rodar no servidor.
+
+* **Função:** Realiza requisições periódicas para validar se a API e o Banco de Dados estão respondendo corretamente.
+* **Logs:** Gera um histórico de disponibilidade em `uptime.log`.
+* **Agendamento:** Configurado via Crontab para execução a cada 5 minutos:
+    `*/5 * * * * /usr/bin/python3 /caminho/para/monitor.py`
+
+---
+
+## 🏗️ Arquitetura e Conceitos
+
+* **Microserviços:** A arquitetura desacopla a aplicação (`web`) do banco de dados (`db`).
+* **Docker Networking:** Comunicação segura via DNS interno do Docker (rede bridge), sem expor o banco de dados publicamente.
+* **Persistência (Volumes):** Uso de Docker Volumes para garantir a integridade dos dados mesmo se os containers forem reiniciados.
+* **Security Groups:** Na AWS, o acesso SSH é restrito ao IP do administrador, enquanto a porta da aplicação (8000) é pública.
+
+---
+Desenvolvido por **Felipe Fuka** 🚀
